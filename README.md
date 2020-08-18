@@ -31,4 +31,4 @@
 I'll create a Task Manager that aim to my learning in this 
 web framework
 
-### :folder_file: [studies' notes](./docs/notes.md)
+### :file_folder: [studies' notes](./docs/notes.md)
