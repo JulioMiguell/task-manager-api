@@ -9,3 +9,6 @@ nest g controller tasks --no-spec
 ```
 nest g service tasks --no-spec
 ```
+```
+yarn add class-validator class-transformer
+```
