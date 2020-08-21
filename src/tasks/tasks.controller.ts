@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Param, Delete, Patch, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Patch, Query, UsePipes, ValidationPipe, UseInterceptors, UploadedFile, UploadedFiles } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task, TaksStatus } from './tasks.model';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilterDto } from './dto/get-tasks-filter.dto';
 import { TaskStatusValidatorPipe } from './pipes/task-status-validation.pipe';
+import { FilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller('tasks')
 export class TasksController {
@@ -25,8 +27,16 @@ export class TasksController {
 
     @Post()
     @UsePipes(ValidationPipe)
-    createTask(@Body() createTaskDto: CreateTaskDto): Task {
-       return this.tasksService.createTasks(createTaskDto);
+    @UseInterceptors(FileInterceptor('file', {
+        storage: diskStorage({
+            destination: './uploads'
+        })
+    }))
+    createTask(
+        @Body() createTaskDto: CreateTaskDto,
+        @UploadedFile() attachmentTask
+        ): Task {
+       return this.tasksService.createTasks(createTaskDto, attachmentTask);
         
     }
 
@@ -42,5 +52,16 @@ export class TasksController {
         ): Task {
             return this.tasksService.updateTaskStatus(id, status);
         }
+    
+    @Post('attachment')
+    @UseInterceptors(FileInterceptor('file', {
+        storage: diskStorage({
+            destination: './uploads'
+        })
+    }))
+    pdfAttachmentTask(@UploadedFile() file) {
+       console.log(file);
+       
+    }
 
 }

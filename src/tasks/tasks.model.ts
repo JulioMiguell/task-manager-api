@@ -3,6 +3,7 @@ export interface Task {
     title: string;
     description: string;
     status: TaksStatus;
+    attachmentTask: any;
 }
 
 export enum TaksStatus {

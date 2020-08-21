@@ -42,13 +42,15 @@ export class TasksService {
         return found;
     }
 
-    createTasks(createTaskDto: CreateTaskDto): Task {
+    createTasks(createTaskDto: CreateTaskDto, attachmentTask: any): Task {
         const {title, description} = createTaskDto;
+        console.log(attachmentTask)
         const task: Task = {
             id: uuidv1(),
             title,
             description,
-            status: TaksStatus.OPEN
+            status: TaksStatus.OPEN,
+            attachmentTask
         };
 
         this.tasks.push(task)
